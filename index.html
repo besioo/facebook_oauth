@@ -3,30 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login with Facebook</title>
+  <title>Facebook Login</title>
   <style>
     .facebook-login-button {
       background-color: #1877f2; /* Facebook Blue */
       color: white;
       padding: 10px 20px;
       border-radius: 5px;
-      text-decoration: none;
       font-size: 16px;
-      display: inline-block;
-      text-align: center;
+      cursor: pointer;
+      border: none;
     }
 
     .facebook-login-button:hover {
       background-color: #145dbf; /* Darker blue on hover */
     }
+
+    #email {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
 
-  <a href="https://www.facebook.com/v13.0/dialog/oauth?client_id=1773224160201375&redirect_uri=https://besioo.github.io/facebook_oauth/index.html&scope=email&response_type=token" 
-     class="facebook-login-button">
-     Login with Facebook
-  </a>
+  <h1>Login with Facebook</h1>
+  
+  <!-- Facebook login button -->
+  <button class="facebook-login-button" onclick="loginWithFacebook()">
+    Login with Facebook
+  </button>
+
+  <!-- Area to display the email -->
+  <div id="email"></div>
+
+  <script>
+    // Redirect the user to Facebook OAuth URL
+    function loginWithFacebook() {
+      const appId = '1773224160201375'; // Your App ID
+      const redirectUri = 'https://besioo.github.io/facebook_oauth/index.html'; // Your Redirect URI
+      const scope = 'email'; // Request email permission
+      const responseType = 'token'; // We want the access token
+
+      // Redirect to Facebook Login
+      window.location.href = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
+    }
+
+    // Parse the URL fragment to get the access token
+    function getAccessTokenFromUrl() {
+      const urlParams = new URLSearchParams(window.location.hash.substring(1));
+      return urlParams.get('access_token');
+    }
+
+    // Fetch user data using the Facebook Graph API
+    function fetchUserData(accessToken) {
+      fetch(`https://graph.facebook.com/v13.0/me?fields=email&access_token=${accessToken}`)
+        .then(response => response.json())
+        .then(data => {
+          // Display the email on the page
+          if (data.email) {
+            document.getElementById('email').innerHTML = `Email: ${data.email}`;
+          } else {
+            document.getElementById('email').innerHTML = 'Unable to fetch email.';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          document.getElementById('email').innerHTML = 'Error fetching email.';
+        });
+    }
+
+    // Check if an access token exists in the URL fragment and fetch user data
+    window.onload = function() {
+      const accessToken = getAccessTokenFromUrl();
+      if (accessToken) {
+        fetchUserData(accessToken);
+      }
+    };
+  </script>
 
 </body>
 </html>
