@@ -1,26 +1,32 @@
-<html>
-  <head></head>
-  <body>
-      <script>
-        window.fbAsyncInit = function() {
-          FB.init({
-            appId      : '{your-app-id}',
-            cookie     : true,
-            xfbml      : true,
-            version    : '{api-version}'
-          });
-            
-          FB.AppEvents.logPageView();   
-            
-        };
-      
-        (function(d, s, id){
-           var js, fjs = d.getElementsByTagName(s)[0];
-           if (d.getElementById(id)) {return;}
-           js = d.createElement(s); js.id = id;
-           js.src = "https://connect.facebook.net/en_US/sdk.js";
-           fjs.parentNode.insertBefore(js, fjs);
-         }(document, 'script', 'facebook-jssdk'));
-      </script>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login with Facebook</title>
+  <style>
+    .facebook-login-button {
+      background-color: #1877f2; /* Facebook Blue */
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .facebook-login-button:hover {
+      background-color: #145dbf; /* Darker blue on hover */
+    }
+  </style>
+</head>
+<body>
+
+  <a href="https://www.facebook.com/v13.0/dialog/oauth?client_id=1773224160201375&redirect_uri=https://besioo.github.io/facebook_oauth/index.html&scope=email&response_type=token" 
+     class="facebook-login-button">
+     Login with Facebook
+  </a>
+
+</body>
 </html>
